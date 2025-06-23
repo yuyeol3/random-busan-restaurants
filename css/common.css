@@ -1,0 +1,145 @@
+
+* {
+  /* 기본 글자색 변경 */
+    color: rgb(26, 26, 26);
+}
+
+body {
+    /* flex로 레이아웃 설정 */
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    /* align-items: center; */
+    justify-content: space-around;
+
+
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+}
+
+header {
+    width: 100%;
+    height: 60px;
+    /* 투명한 배경 */
+    background-color: rgba(243, 242, 242, 80%);
+    padding: 5px 10px;
+    
+    position: fixed;
+    top : 0; 
+    left : 0;
+    z-index: 999;
+    transition: transform 0.3s ease-in-out;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+header > nav {
+  margin-right: 20px;
+}
+
+.nav-item {
+  display: inline-block;
+  margin: 0 10px;
+  cursor: pointer;
+  transition: transform 0.3s ease-in-out;
+}
+
+/* 커서 올리면 커지게 */
+.nav-item:hover {
+  transform: scale(105%);
+}
+
+header.hidden {
+  /* .hidden 클래스 추가 -> 헤더를 위로 숨김 */
+    transform: translateY(-100%);
+}
+
+main {
+    /* margin-top: 60px; */
+        min-height: 100vh;
+}
+
+footer {
+    width: 100%;
+    background-color: rgb(243, 242, 242);
+}
+
+footer p {
+    text-align: center;
+    margin: 10px;
+}
+
+#site-title {
+    cursor: pointer;
+    display: inline-block;
+}
+
+.gradient-bg-haeundae {
+  /* 해운대 그라데이션 */
+  background: linear-gradient(160deg, #87CEEB, #BDE6F1);
+}
+
+.gradient-bg-gwangalli-dawn {
+  /* 광안리 그라데이션 */
+  background: linear-gradient(to bottom, #A8CABA, #B5D5E3, #F4DEDE);
+}
+
+.gradient-bg-night-sea {
+  /* 밤 바다 그라데이션 */
+  background: linear-gradient(to right, #0F2027, #203A43, #2C5364);
+}
+
+.gradient-night-sea {
+  /* 텍스트용 그라데이션 */
+  background: linear-gradient(to right, #0F2027, #203A43, #2C5364);
+    /* 텍스트 모양으로 배경을 클리핑(자르기) */
+  -webkit-background-clip: text; /* 웹킷 브라우저(크롬, 사파리)용 */
+  background-clip: text;
+
+  /* 텍스트 색상을 투명하게 설정 */
+  color: transparent;
+
+  /* 폰트 스타일을 더 돋보이게 */
+  font-size: 3rem;
+  font-weight: bold;
+}
+
+
+
+.button {
+  /* 기본 버튼 스타일 */
+  border: 0;
+  border-radius: 10px;
+  padding: 10px 15px;
+  background-color: #87CEEB;
+  font-size: 13px;
+  transition: background-color 0.5s ease-in-out;
+}
+
+.button:hover {
+  background:  #3eb6e6;
+}
+
+/* 채워진 별은 기본적으로 숨김 */
+.favorite-btn .star-filled {
+  display: none;
+}
+
+/* 빈 별은 기본적으로 보임 */
+.favorite-btn .star-outline {
+  display: block;
+}
+
+
+.favorite-btn.active .star-filled {
+  display: block; /* 채워진 별 보이기 */
+}
+
+.favorite-btn.active .star-outline {
+  display: none; /* 빈 별 숨기기 */
+}
+

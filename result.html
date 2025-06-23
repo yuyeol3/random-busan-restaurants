@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>부산 랜덤 맛집</title>
+    <script src="./js/layoutSetter.js" defer></script>
+    <script src="./js/utils.js"></script>
+    <script src="./js/consts.js"></script>
+    <link rel="stylesheet" href="./css/common.css">
+    <link rel="stylesheet" href="./css/result.css">
+    <script type="text/javascript" src="https://oapi.map.naver.com/openapi/v3/maps.js?ncpKeyId=4m0fg7074r&callback=mapCallBack"></script>
+</head>
+<body>
+    <!-- 댓글창 표시용 다이얼로그 -->
+    <dialog id="chat-dialog">
+        <form method="dialog">
+            <button class="button">Close</button>
+        </form>
+        <div class="content">
+
+        </div>
+
+    </dialog>
+    <!-- 메인 섹션 -->
+    <main>
+        <!-- 로딩 화면 표출용 컨테이너 -->
+        <div id="loading-container">
+            <img alt="loading" src="./images/loading.png">
+            <p>맛집을 찾는 중...</p>
+        </div>
+        <h2>맛집을 찾았습니다!
+            <button class="button" onclick="location.reload()">🔄️</button>
+        </h2>
+        <!-- 결과 표출 위한 컨테이너 -->
+        <section id="result-content">
+            <div id="restaurants"></div>
+            <div id="map-container">
+                <div id="map"></div>
+            </div>
+        </section>
+        
+    </main>
+    <script src="./js/result.js"></script>
+</body>
+</html> 

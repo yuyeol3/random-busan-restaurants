@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>부산 랜덤 맛집</title>
+    <script src="./js/layoutSetter.js" defer></script>
+    <link rel="stylesheet" href="./css/common.css">
+    <link rel="stylesheet" href="./css/main.css">
+</head>
+<body class="gradient-bg-haeundae">
+    <main>
+        <!-- 제목, 주사위 -->
+        <h1 class="gradient-night-sea">랜덤맛집 찾기</h1>
+        <img alt="a dice" src="./images/dice2.png" id="dice-img">
+        <!-- 클릭 시 옵션 패널 표출용 -->
+        <details>
+            <summary>옵션</summary>
+            <form id="option-form">
+                <!-- 모든 구/군 대상 -->
+                <label for="total-opt">전체</label> <input id="total-opt" type="radio" name="locSetting" value="0" checked> <br>
+                <!-- 특정 지역으로 제한 -->
+                <label for="restricted-opt">직접 설정</label> <input id="restricted-opt" type="radio" name="locSetting" value="1">
+                <!-- 옵션 선택 -->
+                <select id="selected-restriction">
+                    <option value="0">금정구/해운대구/기장군</option>
+                    <option value="1">동래구/연제구/수영구</option>
+                    <option value="2">부산진구/동구/남구</option>
+                    <option value="3">서구/중구/영도구</option>
+                    <option value="4">북구/사상구/사하구/강서구</option>
+                </select>
+            </form>
+        </details>
+    </main>
+    <script src="./js/main.js"></script>
+</body>
+</html>

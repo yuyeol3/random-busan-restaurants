@@ -1,0 +1,6 @@
+/* 첫 번째 div - 높이 제한 */
+section > div:first-child {
+    max-height: 600px;
+    overflow-y: scroll;
+} 
+

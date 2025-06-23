@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>부산 랜덤 맛집</title>
+    <script src="./js/layoutSetter.js" defer></script>
+    <link rel="stylesheet" href="./css/common.css">
+    <link rel="stylesheet" href="./css/about.css">
+</head>
+<body>
+    <main>
+        <h1 class="gradient-night-sea" id="about-title">랜덤맛집 찾기</h1>
+        <!-- 소개 섹션 -->
+        <section>
+            <h2>소개</h2>
+            <p>
+                <strong>"부산 랜덤 맛집 찾기"</strong>에 오신 것을 환영합니다!
+                <br><br>
+                "오늘 뭐 먹지?"라는 끝없는 고민을 해결하기 위해 탄생한 웹사이트입니다. <br>
+                메인 페이지에서 주사위를 클릭하기만 하면, 부산의 수많은 맛집 중 5곳을 랜덤으로 추천해 드립니다.
+                <br><br>
+                <strong>주요 기능:</strong>
+                <ul>
+                    <li><strong>랜덤 맛집 추천:</strong> 부산 전역 또는 원하는 지역(구/군)을 선택하여 맛집을 무작위로 추천받을 수 있습니다.</li>
+                    <li><strong>지도 연동:</strong> 추천된 맛집의 위치를 실시간으로 지도에서 확인하고, 클릭 시 네이버 지도로 연결하여 상세 정보를 볼 수 있습니다.</li>
+                    <li><strong>즐겨찾기:</strong> 마음에 드는 맛집은 별 모양 버튼을 눌러 저장하세요. 'Favorites' 페이지에서 언제든지 저장된 맛집 목록을 다시 확인할 수 있습니다.</li>
+                </ul>
+                <br>
+            </p>
+            <h2>사용한 API</h2>
+            <p>
+                <ul>
+                    <li>네이버 지도 API</li>
+                    <li>부산시 모범음식점 API</li>
+                </ul>
+            </p>
+            <h2>구/군별 음식점 정보</h2>
+            <!-- API에서 제공하는 데이터 정보 -->
+            <table>
+                <thead>
+                    <tr>
+                        <th>구/군</th>
+                        <th>음식점 수</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>강서구</td>
+                        <td>3</td>
+                    </tr>
+                    <tr>
+                        <td>북구</td>
+                        <td>4</td>
+                    </tr>
+                    <tr>
+                        <td>영도구</td>
+                        <td>5</td>
+                    </tr>
+                    <tr>
+                        <td>남구</td>
+                        <td>8</td>
+                    </tr>
+                    <tr>
+                        <td>서구</td>
+                        <td>9</td>
+                    </tr>
+                    <tr>
+                        <td>사상구</td>
+                        <td>14</td>
+                    </tr>
+                    <tr>
+                        <td>연제구</td>
+                        <td>14</td>
+                    </tr>
+                    <tr>
+                        <td>수영구</td>
+                        <td>16</td>
+                    </tr>
+                    <tr>
+                        <td>기장군</td>
+                        <td>17</td>
+                    </tr>
+                    <tr>
+                        <td>중구</td>
+                        <td>17</td>
+                    </tr>
+                    <tr>
+                        <td>동구</td>
+                        <td>19</td>
+                    </tr>
+                    <tr>
+                        <td>동래구</td>
+                        <td>22</td>
+                    </tr>
+                    <tr>
+                        <td>해운대구</td>
+                        <td>26</td>
+                    </tr>
+                    <tr>
+                        <td>사하구</td>
+                        <td>32</td>
+                    </tr>
+                    <tr>
+                        <td>금정구</td>
+                        <td>33</td>
+                    </tr>
+                    <tr>
+                        <td>부산진구</td>
+                        <td>46</td>
+                    </tr>
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <th>합계</th>
+                        <th>285</th>
+                    </tr>
+                </tfoot>
+            </table>
+        </section>
+        
+    </main>
+</body>
+</html>

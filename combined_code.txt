@@ -1,0 +1,1101 @@
+=== about.html ===
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>부산 랜덤 맛집</title>
+    <script src="./js/layoutSetter.js" defer></script>
+    <link rel="stylesheet" href="./css/common.css">
+    <link rel="stylesheet" href="./css/about.css">
+</head>
+<body>
+    <main>
+        <h1 class="gradient-night-sea" id="about-title">랜덤맛집 찾기</h1>
+        <!-- 소개 섹션 -->
+        <section>
+            <h2>소개</h2>
+            <p>
+                <strong>"부산 랜덤 맛집 찾기"</strong>에 오신 것을 환영합니다!
+                <br><br>
+                "오늘 뭐 먹지?"라는 끝없는 고민을 해결하기 위해 탄생한 웹사이트입니다. <br>
+                메인 페이지에서 주사위를 클릭하기만 하면, 부산의 수많은 맛집 중 5곳을 랜덤으로 추천해 드립니다.
+                <br><br>
+                <strong>주요 기능:</strong>
+                <ul>
+                    <li><strong>랜덤 맛집 추천:</strong> 부산 전역 또는 원하는 지역(구/군)을 선택하여 맛집을 무작위로 추천받을 수 있습니다.</li>
+                    <li><strong>지도 연동:</strong> 추천된 맛집의 위치를 실시간으로 지도에서 확인하고, 클릭 시 네이버 지도로 연결하여 상세 정보를 볼 수 있습니다.</li>
+                    <li><strong>즐겨찾기:</strong> 마음에 드는 맛집은 별 모양 버튼을 눌러 저장하세요. 'Favorites' 페이지에서 언제든지 저장된 맛집 목록을 다시 확인할 수 있습니다.</li>
+                </ul>
+                <br>
+            </p>
+            <h2>사용한 API</h2>
+            <p>
+                <ul>
+                    <li>네이버 지도 API</li>
+                    <li>부산시 모범음식점 API</li>
+                </ul>
+            </p>
+            <h2>구/군별 음식점 정보</h2>
+            <!-- API에서 제공하는 데이터 정보 -->
+            <table>
+                <thead>
+                    <tr>
+                        <th>구/군</th>
+                        <th>음식점 수</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>강서구</td>
+                        <td>3</td>
+                    </tr>
+                    <tr>
+                        <td>북구</td>
+                        <td>4</td>
+                    </tr>
+                    <tr>
+                        <td>영도구</td>
+                        <td>5</td>
+                    </tr>
+                    <tr>
+                        <td>남구</td>
+                        <td>8</td>
+                    </tr>
+                    <tr>
+                        <td>서구</td>
+                        <td>9</td>
+                    </tr>
+                    <tr>
+                        <td>사상구</td>
+                        <td>14</td>
+                    </tr>
+                    <tr>
+                        <td>연제구</td>
+                        <td>14</td>
+                    </tr>
+                    <tr>
+                        <td>수영구</td>
+                        <td>16</td>
+                    </tr>
+                    <tr>
+                        <td>기장군</td>
+                        <td>17</td>
+                    </tr>
+                    <tr>
+                        <td>중구</td>
+                        <td>17</td>
+                    </tr>
+                    <tr>
+                        <td>동구</td>
+                        <td>19</td>
+                    </tr>
+                    <tr>
+                        <td>동래구</td>
+                        <td>22</td>
+                    </tr>
+                    <tr>
+                        <td>해운대구</td>
+                        <td>26</td>
+                    </tr>
+                    <tr>
+                        <td>사하구</td>
+                        <td>32</td>
+                    </tr>
+                    <tr>
+                        <td>금정구</td>
+                        <td>33</td>
+                    </tr>
+                    <tr>
+                        <td>부산진구</td>
+                        <td>46</td>
+                    </tr>
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <th>합계</th>
+                        <th>285</th>
+                    </tr>
+                </tfoot>
+            </table>
+        </section>
+        
+    </main>
+</body>
+</html>
+
+=== favorites.html ===
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>부산 랜덤 맛집</title>
+    <script src="./js/layoutSetter.js" defer></script>
+    <script src="./js/utils.js"></script>
+    <script src="./js/consts.js"></script>
+    <link rel="stylesheet" href="./css/common.css">
+    <link rel="stylesheet" href="./css/result.css">
+    <link rel="stylesheet" href="./css/favorites.css">
+    <script type="text/javascript" src="https://oapi.map.naver.com/openapi/v3/maps.js?ncpKeyId=4m0fg7074r&callback=mapCallBack"></script>
+</head>
+<body>
+    <!-- 댓글창 표시용 다이얼로그 -->
+    <dialog id="chat-dialog">
+        <form method="dialog">
+            <button class="button">Close</button>
+        </form>
+        <div class="content">
+
+        </div>
+
+    </dialog>
+    <main>
+        <div id="loading-container">
+            <img alt="loading" src="./images/loading.png">
+            <p>맛집을 찾는 중...</p>
+        </div>
+        <!-- results와 유사하나 저장된 favorites 데이터를 활용 -->
+        <h2>Favorites</h2>
+        <section id="result-content">
+            <div id="restaurants"></div>
+            <div id="map-container">
+                <div id="map"></div>
+            </div>
+        </section>
+        
+    </main>
+    <script src="./js/favorites.js"></script>
+</body>
+</html> 
+
+=== main.html ===
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>부산 랜덤 맛집</title>
+    <script src="./js/layoutSetter.js" defer></script>
+    <link rel="stylesheet" href="./css/common.css">
+    <link rel="stylesheet" href="./css/main.css">
+</head>
+<body class="gradient-bg-haeundae">
+    <main>
+        <!-- 제목, 주사위 -->
+        <h1 class="gradient-night-sea">랜덤맛집 찾기</h1>
+        <img alt="a dice" src="./images/dice2.png" id="dice-img">
+        <!-- 클릭 시 옵션 패널 표출용 -->
+        <details>
+            <summary>옵션</summary>
+            <form id="option-form">
+                <!-- 모든 구/군 대상 -->
+                <label for="total-opt">전체</label> <input id="total-opt" type="radio" name="locSetting" value="0" checked> <br>
+                <!-- 특정 지역으로 제한 -->
+                <label for="restricted-opt">직접 설정</label> <input id="restricted-opt" type="radio" name="locSetting" value="1">
+                <!-- 옵션 선택 -->
+                <select id="selected-restriction">
+                    <option value="0">금정구/해운대구/기장군</option>
+                    <option value="1">동래구/연제구/수영구</option>
+                    <option value="2">부산진구/동구/남구</option>
+                    <option value="3">서구/중구/영도구</option>
+                    <option value="4">북구/사상구/사하구/강서구</option>
+                </select>
+            </form>
+        </details>
+    </main>
+    <script src="./js/main.js"></script>
+</body>
+</html>
+
+=== result.html ===
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>부산 랜덤 맛집</title>
+    <script src="./js/layoutSetter.js" defer></script>
+    <script src="./js/utils.js"></script>
+    <script src="./js/consts.js"></script>
+    <link rel="stylesheet" href="./css/common.css">
+    <link rel="stylesheet" href="./css/result.css">
+    <script type="text/javascript" src="https://oapi.map.naver.com/openapi/v3/maps.js?ncpKeyId=4m0fg7074r&callback=mapCallBack"></script>
+</head>
+<body>
+    <!-- 댓글창 표시용 다이얼로그 -->
+    <dialog id="chat-dialog">
+        <form method="dialog">
+            <button class="button">Close</button>
+        </form>
+        <div class="content">
+
+        </div>
+
+    </dialog>
+    <!-- 메인 섹션 -->
+    <main>
+        <!-- 로딩 화면 표출용 컨테이너 -->
+        <div id="loading-container">
+            <img alt="loading" src="./images/loading.png">
+            <p>맛집을 찾는 중...</p>
+        </div>
+        <h2>맛집을 찾았습니다!
+            <button class="button" onclick="location.reload()">🔄️</button>
+        </h2>
+        <!-- 결과 표출 위한 컨테이너 -->
+        <section id="result-content">
+            <div id="restaurants"></div>
+            <div id="map-container">
+                <div id="map"></div>
+            </div>
+        </section>
+        
+    </main>
+    <script src="./js/result.js"></script>
+</body>
+</html> 
+
+=== css\about.css ===
+main {
+    margin-top: 60px;
+    padding: 20px;
+    position : relative;
+}
+
+#about-title {
+    text-align: center;
+    font-size: 4em;
+}
+
+section {
+    width: 80%;
+    margin: 0 auto;
+}
+
+table, tr, td, th {
+    border-collapse: collapse;
+    border: 1px solid black;
+}
+
+table {
+    margin: 0 auto;
+}
+
+td,th {
+    width: 200px;
+    padding: 5px;
+}
+
+=== css\common.css ===
+
+* {
+  /* 기본 글자색 변경 */
+    color: rgb(26, 26, 26);
+}
+
+body {
+    /* flex로 레이아웃 설정 */
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    /* align-items: center; */
+    justify-content: space-around;
+
+
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+}
+
+header {
+    width: 100%;
+    height: 60px;
+    /* 투명한 배경 */
+    background-color: rgba(243, 242, 242, 80%);
+    padding: 5px 10px;
+    
+    position: fixed;
+    top : 0; 
+    left : 0;
+    z-index: 999;
+    transition: transform 0.3s ease-in-out;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+header > nav {
+  margin-right: 20px;
+}
+
+.nav-item {
+  display: inline-block;
+  margin: 0 10px;
+  cursor: pointer;
+  transition: transform 0.3s ease-in-out;
+}
+
+/* 커서 올리면 커지게 */
+.nav-item:hover {
+  transform: scale(105%);
+}
+
+header.hidden {
+  /* .hidden 클래스 추가 -> 헤더를 위로 숨김 */
+    transform: translateY(-100%);
+}
+
+main {
+    /* margin-top: 60px; */
+        min-height: 100vh;
+}
+
+footer {
+    width: 100%;
+    background-color: rgb(243, 242, 242);
+}
+
+footer p {
+    text-align: center;
+    margin: 10px;
+}
+
+#site-title {
+    cursor: pointer;
+    display: inline-block;
+}
+
+.gradient-bg-haeundae {
+  /* 해운대 그라데이션 */
+  background: linear-gradient(160deg, #87CEEB, #BDE6F1);
+}
+
+.gradient-bg-gwangalli-dawn {
+  /* 광안리 그라데이션 */
+  background: linear-gradient(to bottom, #A8CABA, #B5D5E3, #F4DEDE);
+}
+
+.gradient-bg-night-sea {
+  /* 밤 바다 그라데이션 */
+  background: linear-gradient(to right, #0F2027, #203A43, #2C5364);
+}
+
+.gradient-night-sea {
+  /* 텍스트용 그라데이션 */
+  background: linear-gradient(to right, #0F2027, #203A43, #2C5364);
+    /* 텍스트 모양으로 배경을 클리핑(자르기) */
+  -webkit-background-clip: text; /* 웹킷 브라우저(크롬, 사파리)용 */
+  background-clip: text;
+
+  /* 텍스트 색상을 투명하게 설정 */
+  color: transparent;
+
+  /* 폰트 스타일을 더 돋보이게 */
+  font-size: 3rem;
+  font-weight: bold;
+}
+
+
+
+.button {
+  /* 기본 버튼 스타일 */
+  border: 0;
+  border-radius: 10px;
+  padding: 10px 15px;
+  background-color: #87CEEB;
+  font-size: 13px;
+  transition: background-color 0.5s ease-in-out;
+}
+
+.button:hover {
+  background:  #3eb6e6;
+}
+
+/* 채워진 별은 기본적으로 숨김 */
+.favorite-btn .star-filled {
+  display: none;
+}
+
+/* 빈 별은 기본적으로 보임 */
+.favorite-btn .star-outline {
+  display: block;
+}
+
+
+.favorite-btn.active .star-filled {
+  display: block; /* 채워진 별 보이기 */
+}
+
+.favorite-btn.active .star-outline {
+  display: none; /* 빈 별 숨기기 */
+}
+
+
+
+=== css\favorites.css ===
+/* 첫 번째 div - 높이 제한 */
+section > div:first-child {
+    max-height: 600px;
+    overflow-y: scroll;
+} 
+
+
+
+=== css\main.css ===
+main {
+    /* 내용이 가운데 보이도록 정렬 */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    margin: 40px 0 ;
+}
+
+#dice-img {
+    /* 주사위에 커서를 올리면 커짐 */
+    height: 50%;
+    margin: 20px 0;
+    max-width: 500px;
+    transition: transform 0.3s ease-in-out;
+
+}
+
+#dice-img:hover {
+    transform: scale(1.15);
+}
+
+#option-form label {
+    display: inline-block;
+    width: 80px;
+}
+
+/* 모바일 비율 대응 */
+@media (max-width : 700px) {
+    #dice-img {
+        max-width: 90%;
+    }
+}
+
+=== css\result.css ===
+
+:root {
+    /* 변수 설정 */
+    --card-bg-color: #ffffff;
+    --shadow-color: rgba(0, 0, 0, 0.1);
+    --shadow-elevation-low: 0 1px 2px var(--shadow-color), 0 2px 4px var(--shadow-color);
+    --shadow-elevation-medium: 0 2px 4px var(--shadow-color), 0 4px 8px var(--shadow-color);
+    --border-radius: 12px;
+    --spacing-unit: 1rem; /* 16px */
+}
+
+main {
+    margin-top: 60px;
+    padding: 20px;
+    position : relative;
+}
+
+#loading-container {
+    /* 로딩 표출을 위한 컨테이너 */
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    z-index: 998;
+    background-color: white;
+    top: 0px;
+    left: 0px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#loading-container > img {
+    width: 100px;
+    animation: loading 1s infinite linear;
+}
+
+
+@keyframes loading {
+    /* 로딩 애니메이션 */
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg);}
+}
+
+
+#result-content {
+    display: flex;
+    flex-wrap : wrap;
+    justify-content: space-between;
+}
+
+#map-container {
+    min-height: 500px;
+}
+
+#map {
+    width: 100%;
+    height: 100%;
+}
+
+#result-content > div {
+    width: 47%;
+    padding: 10px;
+}
+
+.restaurant-card {
+    /* 식당 정보 표시 컨테이너 스타일 */
+
+    margin: 20px auto;
+
+    background-color: var(--card-bg-color);
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow-elevation-low);
+    margin-bottom: var(--spacing-unit); /* 카드 간 세로 간격 */
+    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+    display: flex; /* 내부 요소 정렬을 위해 flex 사용 */
+    justify-content: space-between;
+    align-items: center;
+
+    position: relative;
+    width: 90%;
+    padding: 5px 10px;
+}
+
+.favorite-btn {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  border : 0;
+  background: transparent;
+}
+
+.restaurant-card .info {
+  min-width: 70%;
+}
+
+.restaurant-card .buttons {
+  min-width: 30%;
+  display: flex;
+  align-items: end;
+  justify-content: end;
+  /* flex-direction: column; */
+}
+
+.restaurant-card .buttons > button {
+    margin: 0 1%;
+}
+
+
+#map-container {
+    min-height: 500px;
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow-elevation-low);
+    overflow: hidden; /* 둥근 모서리 안으로 지도가 잘리지 않도록 */
+}
+
+#map {
+    width: 100%;
+    height: 100%;
+}
+
+#chat-dialog {
+  width: 60%;
+  height: 60%;
+  border-radius: 10px;
+  border : 0px;
+}
+
+
+
+#chat-dialog .container {
+  overflow-y: scroll;
+
+}
+
+/* 모바일 대응 */
+@media (max-width : 700px) {
+    #result-content > div {
+        width: 100%;
+    }
+
+    #chat-dialog {
+        width: 90%;
+    }
+}
+
+
+
+
+=== ideas\test.html ===
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+<script>
+const url = new URL("https://apis.data.go.kr/B551011/DataLabService/metcoRegnVisitrDDList")
+url.searchParams.append("numOfRows", 1)
+url.searchParams.append("pageNo", 1)
+url.searchParams.append("MobileOS", "WIN");
+url.searchParams.append("MobileApp", "test");
+url.searchParams.append("serviceKey", "DZUIFVa8jSOQwFqdDguTg7YNvaQvshjE0M+YdZ2wppO3OYJSBJZCLOt5FHdW3+4Qdi1F8QCx33vrNHibVfTb9g==");
+url.searchParams.append("startYmd", "20250101")
+url.searchParams.append("endYmd", "20250501");
+url.searchParams.append("_type", "json");
+// console.log(url);
+fetch(url)
+    .then((res)=>res.json())
+    .then(data=>console.log(data));
+</script>
+</body>
+</html>
+
+=== ideas\test.js ===
+const fs = require("fs/promises");
+
+const url = new URL("https://apis.data.go.kr/B551011/DataLabService/metcoRegnVisitrDDList")
+url.searchParams.append("numOfRows", 1)
+url.searchParams.append("pageNo", 1)
+url.searchParams.append("MobileOS", "WIN");
+url.searchParams.append("MobileApp", "test");
+url.searchParams.append("serviceKey", "DZUIFVa8jSOQwFqdDguTg7YNvaQvshjE0M+YdZ2wppO3OYJSBJZCLOt5FHdW3+4Qdi1F8QCx33vrNHibVfTb9g==");
+url.searchParams.append("startYmd", "20250101")
+url.searchParams.append("endYmd", "20250501");
+url.searchParams.append("_type", "json");
+// console.log(url);
+fetch(url)
+    .then((res)=>res.json())
+    .then(async (data)=>{
+        console.log(data);
+        fs.writeFile("./res.json", JSON.stringify(data))
+    });
+
+=== js\consts.js ===
+const RESTRUANT_API_KEY = "DZUIFVa8jSOQwFqdDguTg7YNvaQvshjE0M+YdZ2wppO3OYJSBJZCLOt5FHdW3+4Qdi1F8QCx33vrNHibVfTb9g=="
+const RESTRUANT_API_URL = 'http://apis.data.go.kr/6260000/BusanTblFnrstrnStusService/getTblFnrstrnStusInfo';
+
+const RESTRICT_OPTIONS = {
+    0: ["금정구", "해운대구", "기장군"],
+    1: ["동래구", "연제구", "수영구"],
+    2: ["부산진구", "동구", "남구"],
+    3: ["서구", "중구", "영도구"],
+    4: ["북구", "사상구", "사하구", "강서구"]
+}
+
+=== js\favorites.js ===
+// window.localStorage에 있는 저장한 데이터 모두 추출
+function getAllFavoritesData() {
+    const res = [];
+    for (const datum of Object.values(favoritesManager.data)) {
+        const r = new Restaurant();
+        r.addr = datum.addr;
+        r.cond = datum.cond;
+        r.gugun = datum.gugun;
+        r.lat = datum.lat;
+        r.lng = datum.lng;
+        r.menu = datum.menu;
+        r.name = datum.name;
+        r.tel = datum.tel;
+
+        res.push(r);
+    }
+
+    return res;
+}
+
+// 로딩화면 토글 함수
+let loadingOn = false;
+function toggleLoading() {
+    const loadingEl = document.getElementById("loading-container");
+    loadingEl.style.display = loadingOn ? "none" : "";
+    loadingOn = !loadingOn;
+}
+
+// 저장한 식당 데이터를 불러와 화면에 추가
+function addFavoriteRestaurants() {
+
+    const restaurants = getAllFavoritesData();
+    const restaurantsEl = document.getElementById("restaurants");
+
+    for (const restaurant of restaurants) {
+        const view = restaurant.getView(map);
+        restaurantsEl.append(view);
+    }
+
+
+}
+
+// 지도 콜백 함수
+let map = null;
+async function mapCallBack() {
+    toggleLoading();
+    map = new naver.maps.Map('map', {
+        center: new naver.maps.LatLng(35.230449, 129.070540),
+        zoom: 10
+    });   
+    addFavoriteRestaurants();
+    toggleLoading();
+}
+
+
+=== js\layoutSetter.js ===
+// 헤더 설정
+function setHeader() {
+    const headerEl = document.createElement("header");
+    headerEl.innerHTML = `
+        <h3 id="site-title">부산 랜덤맛집</h3>
+        <nav>
+            <span class="nav-item">
+                <a href="./favorites.html">Favorites</a>
+            </span>
+            <span class="nav-item">
+                <a href="./about.html">About</a>
+            </span>
+        </nav>
+    `;
+
+    headerEl.querySelector("#site-title").onclick = ()=> {location.href = "./main.html"}
+
+    document.body.prepend(headerEl);
+}
+
+// 푸터 설정
+function setFooter() {
+    const footerEl = document.createElement("footer");
+    footerEl.innerHTML = `
+        <p>2025-1 인터넷과웹기초 텀프로젝트</p>
+        <p>최유렬 & 박수민</p>
+    `;
+    document.body.appendChild(footerEl);
+}
+
+// DOM content 로드 완료시
+document.addEventListener("DOMContentLoaded", ()=> {
+    // 헤더, 푸터 추가
+    setHeader();
+    setFooter();
+    // 스크롤 다운시 헤더가 숨는 효과
+    const headerEl = document.querySelector("header");
+    let throttleTimer = null;
+    let lastScrollY = 0;
+    const handleScroll = ()=>{
+        let curScrollY = window.scrollY;
+
+        // 새로 스크롤한 뒤 y가 더 크다면 숨기기
+        if (curScrollY > lastScrollY) {
+            headerEl.classList.add("hidden");
+        } else {
+            headerEl.classList.remove("hidden");
+        }
+
+        lastScrollY = curScrollY;
+    }
+
+    window.addEventListener('scroll', ()=> {
+        if (throttleTimer) return;  // 등록된 작업이 있으면 추가하지 않음
+        
+        // 타이머 작업 추가
+        throttleTimer = setTimeout(()=>{
+            handleScroll();
+            throttleTimer = null;
+        }, 100)
+    });
+
+})
+
+
+
+
+
+=== js\main.js ===
+const diceEl = document.getElementById("dice-img");
+const totalOpt = document.getElementById("total-opt");
+const selectedRestriction = document.getElementById("selected-restriction");
+
+
+diceEl.draggable =false;
+
+// 주사위 클릭시
+diceEl.onclick = ()=> {
+    // form 태그에 있는 설정값 읽어오기
+    const isTotal = totalOpt.checked;
+    const restirction = selectedRestriction.value;
+    // 설정값에 따라 query 다르게 지정해 result page로 이동
+    if (isTotal) {
+        location.href = "./result.html?isTotal=1";
+    } else {
+        location.href = `./result.html?isTotal=0&restriction=${restirction}`;
+    }
+}
+
+=== js\result.js ===
+// console.log(getURLParams());
+
+// 총 식당 개수를 반환하는 함수
+async function checkRestaurantNums() {
+    try {
+        const data = await fetchRestaurants(1, 1);
+        return data.response.body.totalCount;
+    }
+    catch (error) {
+        console.error("fetch error: ", error)
+        return 0;
+    }
+}
+
+// API에서 모든 식당 데이터를 받아오는 함수
+async function getAllRestaurantData() {
+    try {
+        const rNums = await checkRestaurantNums();
+        const data = await fetchRestaurants(1, rNums);
+        console.log(data);
+        return data.response.body.items.item;
+    }
+    catch (error) {
+        console.log('fetch error: ', error);
+    }
+}
+
+
+// 랜덤 추출
+function randomPick(dataNum) {
+    const rand = [];
+    for (let i =0; i < dataNum; i++) {
+        const rNum = Math.random();
+        rand.push({rNum, i});
+    }
+    // 랜덤값을 오름차순 정렬
+    rand.sort((a, b)=>b.rNum - a.rNum);
+    // 확률 크기가 큰 아이템 5개 추출
+    return rand.slice(0, 5);
+}
+
+// 로딩화면을 토글하는 함수
+let loadingOn = false;
+function toggleLoading() {
+    const loadingEl = document.getElementById("loading-container");
+    loadingEl.style.display = loadingOn ? "none" : "";
+    loadingOn = !loadingOn;
+}
+
+
+// 데이터를 받아 무작위로 식당 5곳을 추출해, 그 결과를 화면에 보여주는 함수
+// 파라미터에 따라 지역 기준으로 데이터를 필터링할 수 있음
+async function addRandomRestaurants() {
+    const params = getURLParams();
+    const data = await getAllRestaurantData();
+    const targetData = params.isTotal == "1" ? data : data.filter((e)=> {
+        const restriction = RESTRICT_OPTIONS[parseInt(params.restriction)];
+        for (const r of restriction) {
+            console.log(e.gugun, r);
+            if (e.gugun == "부산광역시 " + r || e.gugun == r) return true;
+        }
+
+        return false;
+    });
+    console.log(targetData);
+    const restaurantsEl = document.getElementById("restaurants");
+    const picks = randomPick(targetData.length);
+    for (const pick of picks) {
+        const view = new Restaurant(targetData[pick.i]).getView(map);
+        restaurantsEl.appendChild(view);
+    }
+}
+
+// 지도 콜백함수
+// addRandomRestaurant가 실행시점에 지도 객체가 존재함을 보장받기 위해 이 함수 안으로 들어갔음
+let map = null;
+async function mapCallBack() {
+    toggleLoading();
+    map = new naver.maps.Map('map', {
+        center: new naver.maps.LatLng(35.230449, 129.070540),
+        zoom: 10
+    });    
+    await addRandomRestaurants();
+    toggleLoading();
+}
+
+
+=== js\utils.js ===
+
+// url 파라미터 파싱 헬퍼 함수
+function getURLParams() {
+    const url = new URL(location.href);
+    const res = {};
+
+    for (const key of url.searchParams.keys()) {
+        res[key] = url.searchParams.get(key);
+    }
+    return res;
+}
+
+// api에 데이터 요청해주는 함수
+async function fetchRestaurants(pageNo, numOfRows, restaurantName=null) {
+    const params = {
+        serviceKey : RESTRUANT_API_KEY,
+        pageNo : pageNo,
+        numOfRows : numOfRows,
+        resultType : 'json'
+    }
+    if (restaurantName) params["bsnsNm"] = restaurantName;
+
+    const queryStr = new URLSearchParams(params).toString();
+
+    const res = await fetch(RESTRUANT_API_URL + '?' + queryStr);
+    const data = await res.json();
+    return data;
+}
+
+// 음식점 클래스
+// 음식점 데이터 처리 및 html 생성을 용이하게 해줌
+class Restaurant {
+    constructor(data) {
+        if (!data) return;
+        this.name = data.bsnsNm;
+        this.addr = data.addrRoad;
+        this.lat = data.lat;
+        this.lng = data.lng;
+        this.cond = data.bsnsCond; // 업태
+        this.menu = data.menu;
+        this.gugun = data.gugun.split(" ").at(-1); // 부산광역시 oo구/군
+        this.tel = data.tel;
+    }
+
+    // 이 객체에 대한 div element를 생성하는 메소드
+    getView(mapRef) {
+        // DOM 이용해 div 생성
+        const divEl = document.createElement("div");
+        divEl.restaurantInfo = this;
+        divEl.classList.add("restaurant-card")
+        divEl.innerHTML = `
+            <div class="info">
+                <h3>${this.name}</h3>
+                <p>${this.addr}</p>
+            </div>
+            <div class="buttons">
+                <button class="button goto-location">지도</button>
+                <button class="button chat">댓글</button>
+            </div>
+            <button class="favorite-btn" aria-label="즐겨찾기">
+                <svg width="24" height="24" viewBox="0 0 24 24">
+                    <!-- 빈 별 -->
+                    <polygon class="star-outline" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" points="12 1.5 15.09 8.25 22.5 9.27 17.25 14.31 18.6 21.75 12 18 5.4 21.75 6.75 14.31 1.5 9.27 8.91 8.25 12 1.5"/>
+                    <!-- 채워진 별 -->
+                    <polygon class="star-filled" fill="currentColor" points="12 1.5 15.09 8.25 22.5 9.27 17.25 14.31 18.6 21.75 12 18 5.4 21.75 6.75 14.31 1.5 9.27 8.91 8.25 12 1.5"/>
+                </svg>
+            </button>
+        `;
+        // 지도 이동 기능 구현
+        const gotoButton = divEl.querySelector(".goto-location");
+        let marker = null;
+        gotoButton.onclick = (e)=> {
+            mapRef.setZoom(20);
+            mapRef.panTo(new naver.maps.LatLng(this.lat, this.lng));  // 위-경도 이용해 이동
+
+            // 마카 없으면 추가
+            if (!marker) {
+                marker = new naver.maps.Marker({
+                    position : new naver.maps.LatLng(this.lat, this.lng),
+                    map: mapRef
+                });
+                
+                naver.maps.Event.addListener(marker, 'click', ()=>{
+                    window.open(
+                        `https://map.naver.com/p/search/${encodeURI(this.name + ' ' + this.gugun) }`
+                    );
+                });
+            }
+        }
+
+        // favorite 목록에 있으면 색칠된 상태로 보이게 하기
+        const favoriteButton = divEl.querySelector(".favorite-btn");
+        if (favoritesManager.has(this.name + this.gugun)) {
+            favoriteButton.classList.toggle("active");
+        }
+
+        // 클릭에 따른 토글 및 데이터 처리
+        favoriteButton.onclick = (e)=> {
+            if (favoritesManager.has(this.name + this.gugun)) {
+                favoritesManager.remove(this.name + this.gugun);
+                favoriteButton.classList.toggle("active");
+            }
+            else {
+                favoritesManager.set(this.name + this.gugun, this);
+                favoriteButton.classList.toggle("active");
+            }
+        }
+
+        // 댓글 기능 버튼
+        const chatBtn = divEl.querySelector(".button.chat")
+        chatBtn.onclick = ()=> {
+            openRestaurantDialog("chat-dialog", this.name + ' ' + this.gugun);
+        }
+
+        // 완성된 div 반환
+        return divEl;
+    }
+}
+
+// window.localStoarge를 사용해 favorites 저장하기 위한 클래스
+class FavoritesManager {
+    constructor() {
+        this.KEY_NAME = "random-matzip";
+        const storageStr = localStorage.getItem(this.KEY_NAME);
+        this.data = storageStr ? JSON.parse(storageStr) : {};
+    }
+
+    // 추가
+    set(name, data) {
+        this.data[name] = data;
+        localStorage.setItem(this.KEY_NAME, JSON.stringify(this.data));
+    }   
+
+    // 조회
+    get(name) {
+        this.data[name];
+    }
+    // 삭제
+    remove(name) {
+        delete this.data[name];
+        localStorage.setItem(this.KEY_NAME, JSON.stringify(this.data));
+    }
+    // 즐겨찾기 포함 여부 확인
+    has(name) {
+        return this.data[name] ? true : false;
+    }
+}
+
+// 인스턴스화
+const favoritesManager = new FavoritesManager();
+
+// utterance api 사용, 댓글 기능 추가
+function openRestaurantDialog(tagid, restaurantId) {
+    const dialog = document.getElementById(tagid);
+    const container = dialog.querySelector(".content");
+    container.innerHTML = "";
+
+    // 식당 이름
+    const h2El = document.createElement("h2");
+    h2El.textContent = restaurantId.split(" ")[0] + " 댓글 달기";
+    container.appendChild(h2El);
+
+    // utterance api js 파일 불러오기
+    const scriptEl = document.createElement("script");
+    scriptEl.src = 'https://utteranc.es/client.js';
+    scriptEl.setAttribute("repo", "yuyeol3/iwb-term-chat");
+    scriptEl.setAttribute("issue-term", restaurantId);
+    scriptEl.setAttribute("label", "ut");
+    scriptEl.setAttribute("theme", "github-light");
+    scriptEl.setAttribute("crossorigin", "anonymous");
+    scriptEl.setAttribute("async", true);
+    container.appendChild(scriptEl);
+
+    dialog.showModal();
+}
+

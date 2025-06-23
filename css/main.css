@@ -1,0 +1,33 @@
+main {
+    /* 내용이 가운데 보이도록 정렬 */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    margin: 40px 0 ;
+}
+
+#dice-img {
+    /* 주사위에 커서를 올리면 커짐 */
+    height: 50%;
+    margin: 20px 0;
+    max-width: 500px;
+    transition: transform 0.3s ease-in-out;
+
+}
+
+#dice-img:hover {
+    transform: scale(1.15);
+}
+
+#option-form label {
+    display: inline-block;
+    width: 80px;
+}
+
+/* 모바일 비율 대응 */
+@media (max-width : 700px) {
+    #dice-img {
+        max-width: 90%;
+    }
+}
