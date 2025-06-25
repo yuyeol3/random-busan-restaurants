@@ -85,6 +85,11 @@ class Restaurant {
                         `https://map.naver.com/p/search/${encodeURI(this.name + ' ' + this.gugun) }`
                     );
                 });
+                
+            }
+
+            if (window.outerWidth <= 700) {
+                document.getElementById("map-container").scrollIntoView();
             }
         }
 
